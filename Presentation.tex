@@ -1,0 +1,336 @@
+\documentclass[12pt,xcolor={dvipsnames}]{beamer}
+
+\input{Externals/UsePackages} %
+% \pagecolor{white}\usepackage{pdfpages} % For including other PDFs
+\input{Externals/Macros} %
+\input{Externals/Cornell} %
+%\usepackage{multimedia} %
+%\usepackage[setpagesize=false]{hyperref} %
+%\usepackage{pgfpages} %
+\usepackage[overlay]{textpos} %
+
+\setlength{\TPHorizModule}{1cm}
+\setlength{\TPVertModule}{1cm}
+
+\renewcommand{\vec}{\bm}
+
+\setbeamercolor{normal text}{fg=CornellDarkGray,%
+  bg=CornellLightestGray}
+\titlegraphic{\includegraphics[width=75pt, height=75pt]%
+  {Externals/CULogoFineGray}}
+
+
+%% For tikz/pgf plots
+\usepackage{tikz} %
+% \usepackage{tikzscale} %
+\usepackage{pgfplots} %
+\usepackage{pgfplotstable} %
+\pgfplotsset{width=330pt} %
+\pgfplotsset{compat=1.7} %
+\usetikzlibrary{pgfplots.groupplots} %
+\usetikzlibrary{calc} %
+%\usetikzlibrary{decorations.shapes} %
+%\usetikzlibrary{decorations.markings} %
+%\usetikzlibrary{decorations.pathreplacing, calc} %
+\pgfplotsset{axis line style={line width=1pt, black}} %
+\pgfplotsset{tick style={line width=1pt, black}} %
+\pgfplotsset{minor tick style={black}} %
+\newcommand{\PlotData}{
+  \addplot[color=Red, densely dotted, very thick]
+  table[x index=0, y index=1] {\loadedtable};
+  \addplot[color=Blue, dotted, very thick]
+  table[x index=0, y index=2] {\loadedtable};
+  \addplot[smooth, color=Green, very thick]
+  table[x index=0, y index=3] {\loadedtable};
+  \addplot[color=Blue]
+  table[x index=0, y index=4] {\loadedtable};
+  \addplot[color=Red]
+  table[x index=0, y index=5] {\loadedtable};
+}
+%% Automatically write figures as PDFs for import next time
+\usetikzlibrary{external}
+\tikzexternalize
+\tikzsetfigurename{Presentation_} %
+%\tikzset{external/force remake} % To force reprocessing of plots
+
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+
+%\DeclareMathOperator*{\argmin}{arg\,min}
+
+\graphicspath{{Plots/}{Plots/PenroseDiagrams}{Movies/}{Copies/}} %
+
+\title{Implementing BMS transformations}
+
+\author[Mike Boyle] {Mike Boyle}
+
+% \institute{American Physical Society}
+
+\date{May 19, 2015}
+
+\subject{}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{Outline}
+  \begin{itemize}
+  \item Motivation
+    \begin{itemize}
+    \item Problems in the waveforms
+    \item Center-of-mass drifts
+    \item Cleaning up waveforms
+    \end{itemize}
+  \item Asymptotic symmetries (BMS group)
+    \begin{itemize}
+    \item Definition (with Penrose diagrams)
+    \item Requirements
+    \item Interpolation
+    \item Spin-weighted functions
+    \end{itemize}
+  \item Conclusions
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Motivation}
+\partpage
+
+
+\begin{frame}
+  \frametitle{A waveform mystery}
+  SXS:BBH:0004
+\end{frame}
+
+\begin{frame}
+  \frametitle{The center of mass}
+  SXS:BBH:0004
+\end{frame}
+
+\begin{frame}
+  \frametitle{Correcting the center of mass}
+  \begin{equation*}
+    \min_{\vec{x}_{0}, \vec{v}_{0}}\ \int_{t_{i}}^{t_{f}} \big\lvert
+      \vec{x}_{\text{CoM}}(t) - (\vec{x}_{0} + \vec{v}_{0}\, t)
+      \big\rvert^{2}\, d t
+  \end{equation*}
+
+  \pause
+  \vspace{0.2in}
+  \begin{equation*}
+    \vec{x}_{0} = \frac{4 (t_{f}^{2} + t_{f} t_{i} + t_{i}^{2}) \int
+      \vec{x}_{\text{CoM}}(t)\, d t - 6 (t_{f}+t_{i})\, \int
+      \vec{x}_{\text{CoM}}(t)\, t\, d t} {(t_{f} - t_{i})^{3}}
+  \end{equation*}
+
+  \vspace{0.2in}
+  \begin{equation*}
+    \vec{v}_{0} = \frac{12 \int \vec{x}_{\text{CoM}}(t)\, t\, d t - 6
+      \int \vec{x}_{\text{CoM}}(t)\, d t} {(t_{f} - t_{i})^{3}}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Corrected waveform}
+  SXS:BBH:0004$'$
+\end{frame}
+
+\begin{frame}
+  \frametitle{Correcting the catalog}
+  \begin{tikzpicture}
+    \draw[dashed,color=gray] (0,0) arc (-90:90:0.5 and 1.5);% right half of the left ellipse
+    \draw[semithick] (0,0) arc (270:90:0.5 and 1.5);% left half of the left ellipse
+    \draw[semithick] (0,0) -- (4,1);% bottom line
+    \draw[semithick] (0,3) -- (4,2);% top line
+    \draw[semithick] (4,1.5) ellipse (0.166 and 0.5);% right ellipse
+    % \draw (-1,1.5) node {$\varnothing d_1$};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[dashed,color=gray] (0,0) arc (0:180:1.5 and 0.5);% right half of the left ellipse
+    \draw[semithick] (0,0) arc (360:180:1.5 and 0.5);% left half of the left ellipse
+    \draw[semithick] (0,0) -- (-0.75,-1);
+    \draw[semithick] (-1.5,0) -- (-0.75,-1);
+  \end{tikzpicture}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Asymptotic symmetries}
+\partpage
+
+\begin{frame}
+  \frametitle{Standard ambiguities}
+  \begin{itemize}
+  \item Time translation
+  \item Phase rotation
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Symmetry transformations}
+  \begin{itemize}
+  \item Time translation
+  \item Space translation
+  \item Supertranslation
+  \item Rotation
+  \item Boost
+  \end{itemize}
+
+  \vspace{0.25in}
+
+  \begin{center}
+    \visible<2->{Bondi-Metzner-Sachs (BMS) group}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Coordinates on $\mathscr{I}^{+}$}
+  \begin{columns}[T]
+    \begin{column}{.5\textwidth}
+      \only<1>{Penrose diagram} %
+      \only<2>{Two observers} %
+      \only<3>{Null rays} %
+    \end{column}
+    \hspace{-.15\textwidth}
+    \begin{column}{.65\textwidth}
+      \includegraphics<1>[width=\linewidth]{ObserverA}
+      \includegraphics<2>[width=\linewidth]{ObserverB}
+      \includegraphics<3>[width=\linewidth]{NullRays}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Coordinates on $\mathscr{I}^{+}$}
+  \begin{columns}[T]
+    \begin{column}{.5\textwidth}
+      \only<1>{Sphere} %
+      \only<2>{Rotated sphere} %
+      \only<3>{Boosted sphere} %
+    \end{column}
+    \hspace{-.15\textwidth}
+    \begin{column}{.65\textwidth}
+      \includegraphics<1>[width=0.8\linewidth]{OriginalGrid}
+      \includegraphics<2>[width=0.8\linewidth]{DerotatedGrid}
+      \includegraphics<3>[width=0.8\linewidth]{DeboostedGrid}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Coordinates on $\mathscr{I}^{+}$}
+  \begin{columns}[T]
+    \begin{column}{.5\textwidth}
+      \only<1>{Local time $\to$ retarded time \\ $u = t-r$} %
+      \only<2>{Time translation \\
+        $t \mapsto t+\delta t$ \\
+        $u \mapsto u+\delta t$} %
+      \only<3>{Space translation \\
+        $\vec{x} \mapsto \vec{x} + \delta \vec{x}$ \\
+        $u \mapsto u - \delta \vec{x} \cdot \hat{n}$} %
+      \only<4>{Spacetime translation \\
+        $u \mapsto u+\sum_{\ell=0,1;m} \alpha_{\ell, m} Y_{\ell,
+          m}(\theta, \phi)$} %
+      \only<5->{Supertranslation \\
+        $u \mapsto u+\sum_{\ell, m} \alpha_{\ell, m}
+        Y_{\ell,m}(\theta, \phi)$} %
+      % \only<11>{Supertranslation ambiguity} %
+    \end{column}
+    \hspace{-.15\textwidth}
+    \begin{column}{.65\textwidth}
+      \includegraphics<1>[width=\linewidth]{AsymptoticCoordinates}
+      \includegraphics<2>[width=\linewidth]{TimeTranslation}
+      \includegraphics<3>[width=\linewidth]{SpaceTranslation}
+      \includegraphics<4>[width=\linewidth]{SpaceTimeTranslation}
+      \includegraphics<5>[width=\linewidth]{SuperTranslation}
+      \includegraphics<6>[width=\linewidth]{ExcludedRegion}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{BMS transformations}
+  \begin{align*}
+    \theta &\mapsto \theta' \\
+    \phi &\mapsto \phi' \\
+    u &\mapsto K(\theta', \phi') \left[u - \alpha(\theta', \phi')
+        \right]
+    % \\[20pt]
+    % \visible<3->{
+    % \alt<2>{h &\mapsto \frac{e^{-2i \lambda}}
+    % {K^{b}} \left[ h - \bar{\eth}^{2} \alpha \right]}{
+    % h(u, \theta, \phi) &\mapsto \frac{e^{-2i \lambda(\theta', \phi')}}
+    % {K^{b}(\theta', \phi')} \left[ h(u', \theta', \phi') -
+    % \bar{\eth}^{2} \alpha(\theta', \phi') \right]}}
+  \end{align*}
+
+  \pause
+
+  \begin{equation*}
+    \alt<3>{
+      h(u, \theta, \phi) \mapsto \frac{e^{-2i \lambda(\theta', \phi')}}
+      {K^{b}(\theta', \phi')} \left[ h(u', \theta', \phi') -
+        \bar{\eth}^{2} \alpha(\theta', \phi') \right]}{h \mapsto
+      \frac{e^{-2i \lambda}} {K^{b}\vphantom{(0)}} \left[ h -
+        \bar{\eth}^{2} \alpha \right]}
+  \end{equation*}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Effects on waveforms}
+%   \only<1>{Simplified waveform (zero $\ell>2$)}
+%   \only<2>{Rotation $10^{-3}$ about $\hat{x}$}
+%   \only<3>{Time translation $\delta t = -1000$}
+%   \only<4>{Space translation $\delta \vec{x} = (0.1, 0, 0)$}
+%   \only<5>{Spacetime translation $\delta = (-1000, 0.1, 0, 0)$}
+%   \only<6>{Boost $\vec{v} = (10^{-4}, 0, 0)$}
+%   \only<7>{Supertranslation $\sim 10^{-2}$}
+%   \begin{center}
+%     \vspace{-0.15in}
+%     \includegraphics<1>[width=\linewidth]{waveform}
+%     \includegraphics<2>[width=\linewidth]{waveform_rotation}
+%     \includegraphics<3>[width=\linewidth]{waveform_time_translation}
+%     \includegraphics<4>[width=\linewidth]{waveform_space_translation}
+%     \includegraphics<5>[width=\linewidth]
+%       {waveform_spacetime_translation}
+%     \includegraphics<6>[width=\linewidth]{waveform_boost}
+%     \includegraphics<7>[width=\linewidth]{waveform_supertranslation}
+%   \end{center}
+% \end{frame}
+
+
+\begin{frame}
+  \frametitle{Summary}
+  \begin{itemize}
+  \item Waveform comparisons
+  \item Must understand ambiguities
+  \item Ambiguities present in NR where we don't want them
+    \begin{itemize}
+    \item We can remove them!
+    \end{itemize}
+  \item Ambiguities absent in PN where we do want them
+    \begin{itemize}
+    \item We can insert them!
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

@@ -1,0 +1,69 @@
+%auto-ignore
+
+%% Basic font packages
+\newcommand{\hmmax}{0}
+\newcommand{\bmmax}{0}
+\usepackage[T3,T1]{fontenc}
+%\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it} % For \mathpzc fonts
+\usepackage{mathrsfs} % For \mathscr fonts
+\usepackage{bm} % For \bm fonts
+\makeatletter
+\@ifclassloaded{beamer}
+  { % if this is a beamer document, use sans-serif fonts
+    \usepackage{tgheros}
+    \renewcommand*\familydefault{\sfdefault}
+  }
+  { % otherwise:
+    \ifx\asybeamer\@empty % use times for articles
+    \usepackage[varg]{txfonts} % For math
+    \usepackage{tgtermes} % For text
+    \else % use beamer fonts for asy documents with beamer
+    \usepackage{tgheros}
+    \renewcommand*\familydefault{\sfdefault}
+    \fi
+  }
+\usepackage{microtype} % For nicer alignment of text
+\def\MT@register@subst@font{
+  \MT@exp@one@n\MT@in@clist\font@name\MT@font@list
+  \ifMT@inlist@\else\xdef\MT@font@list{\MT@font@list\font@name,}\fi}
+\makeatother
+
+% %% Compact the text (smaller intra-word spacing)
+% \AtBeginDocument{
+%   \setlength{\spaceskip}
+%   {0.875\fontdimen2\font
+%     plus 0.925\fontdimen3\font
+%     minus 1\fontdimen4\font}
+% }
+
+%% Spread out the text lines slightly
+\linespread{1.0425}
+
+%% No extra space after periods
+%\frenchspacing
+
+%% A few necessary packages
+\usepackage{graphicx} %
+\usepackage{color} %
+%\usepackage[all]{onlyamsmath} % Error on bad non-ams math
+\usepackage{xspace}
+%% And a few optional ones
+\usepackage{braket}
+\usepackage{accents}
+%\usepackage{rotating} % 'sidewaystable' support
+\usepackage{siunitx}
+\usepackage{mathtools}
+\DeclareSymbolFontAlphabet{\mathrm}{operators}
+
+%% Define a few colors
+\definecolor{CiteColor}{rgb}{0.18039, 0.18824, 0.57255}
+%\definecolor{CiteColor}{rgb}{0.250, 0.250, 0.800}
+\definecolor{UrlColor} {rgb}{0.741, 0.173, 0.000}
+\definecolor{LinkColor}{rgb}{0.25098, 0.47843, 0.04706}
+%\definecolor{LinkColor}{rgb}{0.000, 0.502, 0.118}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "paper"
+%%% End: 
