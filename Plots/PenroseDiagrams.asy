@@ -10,7 +10,7 @@ string[] FileNames = {"PenroseDiagrams", "ObserverA", "ObserverB",
 pen[] DiagramPens = {gray(0.2), gray(0.2), gray(0.2), gray(0.2),
                      gray(0.2), gray(0.2), gray(0.2), gray(0.2),
                      gray(0.2), gray(0.2)};
-pen[] DiagramLabelPens = {gray(0.2), gray(0.5), gray(0.5), gray(0.5),
+pen[] DiagramLabelPens = {gray(0.2), gray(0.5), gray(0.5), invisible,
                           invisible, invisible, invisible, invisible,
                           invisible, invisible};
 
@@ -34,36 +34,36 @@ for(int i=0; i<FileNames.length; ++i) {
 
   if(i==5) { // Draw time-translated observer 'b'
     pair Path(real t) { return PrimeTransform((0.0, t+0.5)); }
-    draw(Label("$\mathscr{B}$", position=Relative(0.75)),
+    draw(Label("$\mathcal{O}'$", position=Relative(0.75)), align=E,
          graph(Path, Infty, -Infty, n=100, PointPicker, join=operator ..),
          dashed+heavyblue);
   }
 
   if(i==6) { // Draw space-translated observer 'b'
     pair Path(real t) { return PrimeTransform((0.7, t)); }
-    draw(Label("$\mathscr{B}$", position=Relative(0.75)), align=E,
+    draw(Label("$\mathcal{O}'$", position=Relative(0.75)), align=E,
          graph(Path, Infty, -Infty, n=100, PointPicker, join=operator ..),
          dashed+heavyblue);
   }
 
   if(i==7) { // Draw spacetime-translated observer 'b'
     pair Path(real t) { return PrimeTransform((0.7, t-0.3)); }
-    draw(Label("$\mathscr{B}$", position=Relative(0.75)), align=E,
+    draw(Label("$\mathcal{O}'$", position=Relative(0.75)), align=E,
          graph(Path, Infty, -Infty, n=100, PointPicker, join=operator ..),
          dashed+heavyblue);
   }
 
   if(i>=1 && i<=7) { // Draw observer 'a'
     pair Path(real t) { return PrimeTransform((0.0, t)); }
-    draw(Label("$\mathscr{A}$", position=Relative(0.25)),
+    draw(Label("$\mathcal{O}$", position=Relative(0.25)), align=W,
          graph(Path, -Infty, Infty, n=100, PointPicker, join=operator ..),
          dashed+deepgreen);
   }
 
   if(i>=2 && i<=4) { // Draw observer 'b'
-    real v = 0.5;
+    real v = -0.5;
     pair Path(real t) { return PrimeTransform((v*t, t)); }
-    draw(Label("$\mathscr{B}$", position=Relative(0.75)),
+    draw(Label("$\mathcal{O}'$", position=Relative(0.75)), align=E,
          graph(Path, Infty, -Infty, n=100, PointPicker, join=operator ..),
          dashed+heavyblue);
   }
