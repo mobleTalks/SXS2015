@@ -9,6 +9,9 @@
 %\usepackage{pgfpages} %
 \usepackage[overlay]{textpos} %
 
+\usepackage[noend]{algorithmic}
+\usepackage{setspace}
+
 \setlength{\TPHorizModule}{1cm}
 \setlength{\TPVertModule}{1cm}
 
@@ -141,18 +144,30 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Corrected center of mass}
+  SXS:BBH:0004$'$
+\end{frame}
+
+\begin{frame}
   \frametitle{Corrected waveform}
   SXS:BBH:0004$'$
 \end{frame}
 
 \begin{frame}
   \frametitle{Correcting the catalog}
-
+  \vspace{-0.2in}
+  \begin{center}
+    \includegraphics<1>[width=\linewidth]{DriftVelocity}
+    \includegraphics<2>[width=\linewidth]{InitialDisplacement}
+    \includegraphics<3>[width=\linewidth]{MaxDisplacement}
+  \end{center}
 \end{frame}
 
 \begin{frame}
   \frametitle{Correcting the initial data}
-  Ask Sergei!
+  \begin{center}
+    Ask Sergei!
+  \end{center}
 \end{frame}
 
 
@@ -222,7 +237,7 @@
   \begin{columns}[T]
     \begin{column}{.5\textwidth}
       \only<1>{Penrose diagram} %
-      \only<2>{Two observers} %
+      \only<2>{Boosted observer} %
       \only<3>{Local time $\to$ retarded time \\ $u = t-r$} %
     \end{column}
     \hspace{-.15\textwidth}
@@ -237,12 +252,15 @@
 \begin{frame}
   \frametitle{Coordinates on $\mathscr{I}^{+}$}
   \begin{columns}[T]
+    \hspace{.05\textwidth}
     \begin{column}{.5\textwidth}
-      \only<1>{Equiangular sphere in $\mathcal{O}'$} %
-      \only<2>{Those points rotated w.r.t. $\mathcal{O}$} %
-      \only<3>{Those points boosted w.r.t. $\mathcal{O}$} %
+      \only<1>{Sphere in $\mathcal{O}'$} %
+      \only<2>{Points as seen in $\mathcal{O}$\\
+        related by rotation} %
+      \only<3>{Points as seen in $\mathcal{O}$\\
+        related by boost} %
     \end{column}
-    \hspace{-.15\textwidth}
+    \hspace{-.1\textwidth}
     \begin{column}{.65\textwidth}
       \includegraphics<1>[width=0.8\linewidth]{OriginalGrid}
       \includegraphics<2>[width=0.8\linewidth]{DerotatedGrid}
@@ -283,7 +301,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{BMS transformations}
+  \frametitle{BMS coordinate transformations}
   \begin{align*}
     \theta &\mapsto \theta' \\
     \phi &\mapsto \phi' \\
@@ -293,22 +311,23 @@
 
   \pause
   \begin{equation*}
-    u' \approx \gamma\, \left[u + u\, \vec{v} \cdot \vec{n} -
-      \alpha(\theta', \phi') \right]
+    u' \approx \gamma\, \left[u - (\vec{x}_{0} + u\, \vec{v}_{0})
+      \cdot \hat{\vec{r}} - \tilde{\alpha}(\theta', \phi') \right]
   \end{equation*}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Waveform transformations}
+  \frametitle{BMS waveform transformations}
+  \vspace{-0.2in}
   \begin{align*}
     r\, h %
     &\mapsto %
-      \frac{e^{-2i \lambda}} {K^{2}} \left[ r\, h - \bar{\eth}^{2} \alpha
+      \frac{e^{-2i \lambda}} {K} \left[ r\, h - \bar{\eth}^{2} \alpha
       \right] %
     \\
     r^{2}\, \sigma %
     &\mapsto %
-      \frac{e^{2i \lambda}} {K^{3}} \left[ r^{2}\, \sigma - \eth^{2}
+      \frac{e^{2i \lambda}} {K} \left[ r^{2}\, \sigma - \eth^{2}
       \alpha \right] %
     \\
     c %
@@ -322,18 +341,18 @@
     \\[15pt]
     r\, \Psi_{4} %
     &\mapsto %
-      \frac{e^{-2i \lambda}} {K^{4}} \left[ r\, \Psi_{4}'\right]
+      \frac{e^{-2i \lambda}} {K^{3}} \left[ r\, \Psi_{4}'\right]
   \end{align*}
 \end{frame}
 
 \begin{frame}
-  \frametitle{BMS transformations}
+  \frametitle{BMS waveform transformations}
   \begin{equation*}
     \alt<2>{
       r\, h(u, \theta, \phi) \mapsto \frac{e^{-2i \lambda(\theta', \phi')}}
-      {K^{2}(\theta', \phi')} \left[ r\, h(u', \theta', \phi') -
+      {K(\theta', \phi')} \left[ r\, h(u', \theta', \phi') -
         \bar{\eth}^{2} \alpha(\theta', \phi') \right]}{r\, h \mapsto
-      \frac{e^{-2i \lambda}} {K^{2}\vphantom{(0)}} \left[ r\, h -
+      \frac{e^{-2i \lambda}} {K\vphantom{(0)}} \left[ r\, h -
         \bar{\eth}^{2} \alpha \right]}
   \end{equation*}
 \end{frame}
@@ -362,36 +381,200 @@
 
 
 \begin{frame}
-  \frametitle{Spin-weighted functions}
-  Weighted functions are contractions between tensors and tetrad
-  elements, as functions of position on the sphere.
+  \frametitle{Spin-weighted functions (SWFs)}
+  \begin{equation*}
+    \Psi_{4}(\theta, \phi) = C_{abcd}(\theta, \phi)\, \bar{m}^{a}\,
+    n^{b}\, \bar{m}^{c}\, n^{d}
+  \end{equation*}
 
-  Weighted functions are \emph{not} just functions on the sphere; you
-  need to specify a position on the sphere, as well as a choice of the
-  tetrad.
+  \pause
+  \begin{equation*}
+    \bar{m}^{a} = \frac{1}{\sqrt{2}} ( \theta^{a} - i\, \phi^{a} )
+  \end{equation*}
 
-  For spin-weighted functions, this is just an alignment of the
-  vectors in the tangent space --- equivalent to choice of unit vector
-  at each point.
+  \pause
+  \vspace{0.2in}
+  \begin{equation*}
+    R: (\theta, \phi) \mapsto (\theta', \phi')
+  \end{equation*}
 
-  But SW functions are not functions from $S^{2} \times S^{1}$.  We
-  can choose a section of that bundle.  But the Hairy-ball theorem
-  forbids continuous choice of such a thing for our purposes.
+  \begin{equation*}
+    \Psi_{4}'(\theta', \phi') = \Psi_{4}(\theta, \phi)\,
+    e^{-2i\lambda(\theta', \phi', R)}
+  \end{equation*}
+\end{frame}
 
-  Instead, it's the Hopf bundle
+\begin{frame}
+  \frametitle{Spin-weighted functions (SWFs)}
+  \begin{center}
+    \includegraphics[width=0.6\linewidth]{DeboostedGrid}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spin-weighted functions (SWFs)}
+  \begin{center}
+    SWFs \emph{are not} functions on the sphere; \\[5pt]
+    also need alignment of tangent space
+  \end{center}
+  
+  \pause
+  \vspace{0.3in}
+  Might be tempted to think
+  \begin{equation*}
+    \Psi_{4} : S^{2} \times S^{1} \to \mathbb{C}
+  \end{equation*}
+
+  \pause
+  Turns out
+  \begin{equation*}
+    \Psi_{4} : S^{3} \to \mathbb{C}
+  \end{equation*}
+  This is the Hopf bundle:
+  \begin{equation*}
+    S^{1} \hookrightarrow S^{3} \twoheadrightarrow S^{2}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spin-weighted functions (SWFs)}
+  \begin{center}
+    SWFs are functions on the spin group \\[10pt]
+    Spin(3) = SU(2) = group of unit quaternions
+  \end{center}
+  \begin{columns}[T]
+    \begin{column}{.3\textwidth}
+      \begin{minipage}[c][.6\textheight][c]{1.8\textwidth}
+        \begin{equation*}
+          \hat{\vec{r}} = R\, \vec{z}\, R^{-1}
+        \end{equation*}
+      \end{minipage}
+    \end{column}
+    \begin{column}{.7\textwidth}
+      \begin{gather*}
+        \vec{l} = R\, \frac{\vec{t} + \vec{z}} {\sqrt{2}}\, R^{-1} \\
+        \vec{n} = R\, \frac{\vec{t} - \vec{z}} {\sqrt{2}}\, R^{-1} \\
+        \vec{m} = R\, \frac{\vec{x} + i\, \vec{y}} {\sqrt{2}}\, R^{-1}
+        \\
+        \bar{\vec{m}} = R\, \frac{\vec{x} - i\, \vec{y}} {\sqrt{2}}\,
+        R^{-1}
+      \end{gather*}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Spin-weighted functions}
+%   Weighted functions are contractions between tensors and tetrad
+%   elements, as functions of position on the sphere.
+
+%   Weighted functions are \emph{not} just functions on the sphere;
+%   you need to specify a position on the sphere, as well as a choice
+%   of the tetrad.
+
+%   For spin-weighted functions, this is just an alignment of the
+%   vectors in the tangent space --- equivalent to choice of unit
+%   vector at each point.
+
+%   But SW functions are not functions from $S^{2} \times S^{1}$.  We
+%   can choose a section of that bundle.  But the Hairy-ball theorem
+%   forbids continuous choice of such a thing for our purposes.
+
+%   Instead, it's the Hopf bundle
+
+%   SWSHs are really functions on the spin group; best to write them
+%   as such
+% \end{frame}
+
+\begin{frame}
+  \frametitle{BMS waveform transformations}
+  \begin{equation*}
+    \alt<2> %
+    {r\, h(u, R) \mapsto \frac{1 \vphantom{e^{2}}} {K(R')} \left[ r\,
+        h(u', R') - \bar{\eth}^{2} \alpha(R') \right]} %
+    {r\, h(u, \theta, \phi) \mapsto \frac{e^{-2i \lambda(\theta', \phi')}}
+      {K(\theta', \phi')} \left[ r\, h(u', \theta', \phi') -
+        \bar{\eth}^{2} \alpha(\theta', \phi') \right]} %
+  \end{equation*}
 \end{frame}
 
 \begin{frame}
   \frametitle{Rotor of a boost}
+  \vspace{-0.3in}
   \begin{gather*}
-    \Theta' = \arccos \left[ \hat{\vec{v}} \cdot \hat{\vec{r}} \right]
+    \Theta' = \arccos \left[ \hat{\vec{v}} \cdot
+      \hat{\vec{r}}_{\theta', \phi'} \right]
     \\[15pt]
     \Theta = 2\, \arctan \left[ \sqrt{ \frac{1-\beta} {1+\beta} } \tan
       \frac{\Theta'}{2} \right]
     \\[15pt]
-    R_{B} = \exp \left[ \frac{\Theta - \Theta'} {2}\, \frac{\vec{r}
-        \times \vec{v}} {\lvert \vec{r} \times \vec{v} \rvert} \right]
+    R_{B} = \exp \left[ \frac{\Theta - \Theta'} {2}\, \frac{\vec{v}
+        \times \vec{r}_{\theta', \phi'} } {\lvert \vec{v} \times
+        \vec{r}_{\theta', \phi'} \rvert} \right]
+    \\[20pt]
+    \visible<2->{R' = R_{B}\, e^{\phi'\, \vec{z}/2}\, e^{\theta'\,
+        \vec{y}/2}}
+    % \\[15pt]
+    % \visible<3->{ e^{-2i\lambda(\theta', \phi')}\, [r\, h(u',
+    % \theta',
+    % \phi') - \bar{\eth}^{2} \alpha(\theta', \phi')] = r\, h(u',
+    % R_{\theta', \phi'}) - \bar{\eth}^{2}\alpha (R_{\theta', \phi'})}
   \end{gather*}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Implementing BMS transformations}
+%   \begin{enumerate}
+%   \item Evaluate
+%     $\frac{r\, h(u_{i}, R_{\theta'_{j}, \phi'_{j}}) -
+%       \bar{\eth}^{2}\alpha (R_{\theta'_{j}, \phi'_{j}})}
+%     {K^{2}(\theta'_{j}, \phi'_{j})}$ for all $u_{i}$
+%   \item Interpolate to $u'_{k}(\theta'_{j}, \phi'_{j})$
+%   \item Repeat on each point $(\theta'_{j}, \phi'_{j})$ of
+%     equiangular grid
+%   \item Feed into \texttt{spinsfast} to get $h'^{\ell,m}(u'_{k})$
+%   \item Repeat for each desired value of $u'_{k}$
+%   \end{enumerate}
+% \end{frame}
+
+\begin{frame}
+  \frametitle{Implementing BMS transformations}
+  \vspace{-0.1in}
+  \algsetup{indent=3em}
+  \begin{spacing}{1.75}
+    \begin{algorithmic}
+      \FORALL{desired times slices $u'_{i}$}
+
+      \FORALL{$(\theta'_{j}, \phi'_{j})$ on equiangular grid}
+
+      \STATE
+      $R'_{j} \gets R_{B}\, e^{\phi'_{j}\, \vec{z}/2}\, e^{\theta'_{j}\,
+        \vec{y}/2}$
+
+      \STATE
+      $u_{i} \gets \frac{u'_{i}}{K(R')} + \alpha(R')$
+
+      \FORALL{$u_{k}$ ``near'' $u_{i}$} %
+
+      \STATE
+      $r' h'(u_{k}, R'_{j}) \gets \frac{r\, h(u_{k}, R'_{j}) -
+        \bar{\eth}^{2}\alpha (R'_{j})} {K(R'_{j})}$
+
+      \ENDFOR
+
+      \STATE
+      $r'h'(u'_{i}, R'_{j}) \gets \texttt{interp} \big( [r' h'(u_{k},
+      R'_{j})],\ u_{i} \big)$
+
+      \ENDFOR
+
+      \STATE
+      $r'h'_{\ell, m}(u'_{i}) \gets \texttt{spinsfast} \big(
+      [r'h'(u'_{i}, R'_{j})] \big)$
+
+      \ENDFOR
+    \end{algorithmic}
+  \end{spacing}
 \end{frame}
 
 \begin{frame}
@@ -400,6 +583,15 @@
   \item No such thing as invariant waveform
   \item No preferred reference frame
   \item When comparing waveforms, frames must agree
+  \end{itemize}
+
+  \vspace{0.2in}
+  Need BMS transformations for
+  \begin{itemize}
+  \item Accurate PN waveforms
+  \item PN--NR comparisons
+  \item Hybrid waveforms
+  \item Making sense of ringdowns
   \end{itemize}
 \end{frame}
 
